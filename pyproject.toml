@@ -4,7 +4,7 @@ version = "0.2.0"
 description = "Parse basketball game videos to extract statistics via YOLO object detection"
 readme = "README.md"
 authors = [
-    { name = "Robert Espinoza", email = "REDACTED" }
+    { name = "Robert Espinoza" }
 ]
 requires-python = ">=3.11"
 dependencies = [

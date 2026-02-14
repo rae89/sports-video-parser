@@ -1,5 +1,6 @@
 """Configuration settings for the sports video parser."""
 
+import os
 from pathlib import Path
 import tempfile
 
@@ -39,7 +40,9 @@ BALL_INTERPOLATION_MAX_GAP: int = 30  # max frames to interpolate across (~1 sec
 
 # Video download
 DEFAULT_VIDEO_FORMAT: str = "best[height<=1080]"
-DOWNLOAD_DIR: Path = Path(tempfile.gettempdir()) / "sports_video_parser"
+_download_dir = Path(tempfile.gettempdir()) / f"sports_video_parser_{os.getuid()}"
+_download_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+DOWNLOAD_DIR: Path = _download_dir
 
 # Output
 DEFAULT_OUTPUT_PATH: Path = Path("game_stats.json")
