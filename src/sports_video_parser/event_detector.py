@@ -11,6 +11,8 @@ from sports_video_parser.config import (
     SCORING_ZONE_PADDING,
     TRANSITION_COOLDOWN_FRAMES,
     TRANSITION_MIN_PLAYERS,
+    TRANSITION_MIN_SWING,
+    TRANSITION_MIN_VELOCITY,
     TRANSITION_SMOOTHING_WINDOW,
 )
 from sports_video_parser.court import CourtAnalyzer
@@ -196,12 +198,11 @@ class EventDetector:
 
         self._smoothed_velocity.append(second_half)
 
-        # Detect reversal: significant velocity sign change
-        min_velocity = 1.0  # minimum pixel/frame velocity to count
+        # Detect reversal: significant velocity sign change with minimum swing
         reversal = (
-            (first_half > min_velocity and second_half < -min_velocity)
-            or (first_half < -min_velocity and second_half > min_velocity)
-        )
+            (first_half > TRANSITION_MIN_VELOCITY and second_half < -TRANSITION_MIN_VELOCITY)
+            or (first_half < -TRANSITION_MIN_VELOCITY and second_half > TRANSITION_MIN_VELOCITY)
+        ) and abs(first_half - second_half) >= TRANSITION_MIN_SWING
 
         if not reversal:
             return events

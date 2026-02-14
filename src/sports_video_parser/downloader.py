@@ -12,6 +12,11 @@ _YOUTUBE_URL_PATTERN = re.compile(
 )
 
 
+def _normalize_url(url: str) -> str:
+    """Strip stray backslash escapes from shell-escaped URLs."""
+    return url.replace("\\", "")
+
+
 def validate_youtube_url(url: str) -> None:
     """Validate that a URL is a YouTube video URL.
 
@@ -26,6 +31,7 @@ def validate_youtube_url(url: str) -> None:
 
 def download_video(url: str, output_dir: Path = DOWNLOAD_DIR, video_format: str = DEFAULT_VIDEO_FORMAT) -> Path:
     """Download a YouTube video and return the path to the downloaded file."""
+    url = _normalize_url(url)
     validate_youtube_url(url)
 
     output_dir.mkdir(parents=True, exist_ok=True)

@@ -31,9 +31,11 @@ POSSESSION_IOU_THRESHOLD: float = 0.3  # ball-player overlap for possession
 EVENT_LOOKBACK_SECONDS: float = 5.0  # time window for assist detection
 
 # Transition-based scoring detection
-TRANSITION_SMOOTHING_WINDOW: int = 15  # frames to smooth player velocity
-TRANSITION_MIN_PLAYERS: int = 3  # min players needed for reversal signal
-TRANSITION_COOLDOWN_FRAMES: int = 150  # ~5 sec cooldown between transition scores
+TRANSITION_SMOOTHING_WINDOW: int = 30  # frames to smooth player velocity (~1 sec)
+TRANSITION_MIN_PLAYERS: int = 5  # min players needed for reversal signal
+TRANSITION_COOLDOWN_FRAMES: int = 300  # ~10 sec cooldown between transition scores
+TRANSITION_MIN_VELOCITY: float = 2.5  # min mean velocity (px/frame) per half to count
+TRANSITION_MIN_SWING: float = 6.0  # min absolute velocity change between halves
 
 # Ball interpolation
 BALL_INTERPOLATION_MAX_GAP: int = 30  # max frames to interpolate across (~1 sec)

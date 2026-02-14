@@ -342,7 +342,7 @@ class TestTransitionDetection:
             frame_det = _frame(frame_index=i, timestamp=i / 30.0, detections=players)
             self.detector.process_frame(frame_det, hoop=None)
 
-        # Try another reversal immediately (within 150-frame cooldown)
+        # Try another reversal immediately (within 300-frame cooldown)
         for i in range(50, 70):
             mean_x = 400 + (i - 50) * 10
             players = self._make_players_at_x(mean_x)
@@ -366,10 +366,14 @@ class TestTransitionDetection:
         assert len(transition_scores) == 0
 
     def test_too_few_players_no_transition(self):
-        """With fewer than TRANSITION_MIN_PLAYERS, no transition detection."""
+        """With fewer than TRANSITION_MIN_PLAYERS (5), no transition detection."""
         for i in range(40):
             x = 500 + (i if i < 20 else 40 - i) * 10
-            players = [_det(track_id=1, class_name="player", bbox=(x, 300, x + 50, 500), team=0)]
+            # 4 players — just below the threshold of 5
+            players = [
+                _det(track_id=j + 1, class_name="player", bbox=(x + j * 30, 300, x + j * 30 + 50, 500), team=0)
+                for j in range(4)
+            ]
             frame_det = _frame(frame_index=i, timestamp=i / 30.0, detections=players)
             events = self.detector.process_frame(frame_det, hoop=None)
             assert len([e for e in events if e.details.get("detection_method") == "player_movement_reversal"]) == 0

@@ -183,8 +183,9 @@ def info(
     """Show video info without parsing."""
     import yt_dlp
 
-    from sports_video_parser.downloader import validate_youtube_url
+    from sports_video_parser.downloader import _normalize_url, validate_youtube_url
 
+    url = _normalize_url(url)
     validate_youtube_url(url)
     with yt_dlp.YoutubeDL({"quiet": True}) as ydl:
         info = ydl.extract_info(url, download=False)
